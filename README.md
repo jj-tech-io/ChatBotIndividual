@@ -43,9 +43,15 @@ and a number of other features found in the console folder. For those who are mo
 
 ### Dependencies
 
-java dependencies (libraries installed using maven):
-import org.apache.commons.math3.linear.*;
-import org.apache.commons.math3.stat.correlation.Covariance;
+### Dependencies
+pom.xml:
+  edu.stanford.nlp,
+  org.slf4j,
+  junit,
+  org.testng,
+  org.apache.opennlp,
+  com.google.cloud,
+  org.apache.commons.math3.*
 
 python dependencies (pip install via console):
 import pandas as pd
@@ -54,7 +60,7 @@ import matplotlib.pyplot as plt
 from autograd import grad 
 
 ### Class structure
-## main.java
+## GUI.java
 Handles user input and bot outputs
 
 ## patterns.java
