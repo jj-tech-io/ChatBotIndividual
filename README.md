@@ -1,7 +1,7 @@
 # Assignment4
 Chat Bot Individual Project
 
-# [Table of Contents]
+## [Table of Contents]
 
 Description
 <br />Getting Started
