@@ -3,7 +3,7 @@ Chat Bot Individual Project
 
 ## [Table of Contents]
 
-Description
+[Description]
 Getting Started
 Dependencies
 <br />Installing
