@@ -3,14 +3,14 @@ Chat Bot Individual Project
 
 ## [Table of Contents]
 
-[Description]
-Getting Started
-Dependencies
-<br />Installing
-<br />Help
-<br />Authors
-<br />Version History
-<br />Acknowledgments
+<br/>Description
+<br/>Getting Started
+<br/>Dependencies
+<br/>Installing
+<br/>Help
+<br/>Authors
+<br/>Version History
+<br/>Acknowledgments
 
 ## Description
 Book, movie and trivia chat bot
