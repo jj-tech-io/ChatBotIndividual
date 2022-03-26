@@ -4,8 +4,8 @@ Chat Bot Individual Project
 ## [Table of Contents]
 
 Description
-<br />Getting Started
-<br />Dependencies
+Getting Started
+Dependencies
 <br />Installing
 <br />Help
 <br />Authors
