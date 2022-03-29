@@ -14,7 +14,7 @@ import static java.awt.Color.black;
 public class GUI<JTimer> implements ActionListener {
     //
     static PCA pca;
-    static ParseNLP parse;
+    static GoogleNLP parse;
     static String browseMovies = "movies";
     static String browseBooks = "books";
     static String trivia = "trivia";
@@ -107,8 +107,8 @@ public class GUI<JTimer> implements ActionListener {
             while(innerRun) {
                 getCBM("Would you like to: browse books, browse movies, play trivia, or request an item?");
                 getUserIN();
-                parse = new ParseNLP(userMsg);
-                ArrayList<String> option = parse.getStringList();
+                parse = new GoogleNLP(userMsg);
+                ArrayList<String> option = parse.getWords();
                 if (option.contains(browseMovies)) {
                     getCBM("You have selected: browse movies, is that right?");
                     getUserIN();
@@ -184,8 +184,8 @@ public class GUI<JTimer> implements ActionListener {
                     cbMsg = "What book would you like to search for?";
                     getCBM(cbMsg);
                     getUserIN();
-                    ParseNLP parseNLP = new ParseNLP(userMsg);
-                    ArrayList<String> words = parseNLP.getWords();
+                    parse = new GoogleNLP(userMsg);
+                    ArrayList<String> words = parse.getWords();
                     boolean hit = false;
                     String search = " ";
                     for(String word : words) {

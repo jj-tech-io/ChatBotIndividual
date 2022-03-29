@@ -1,15 +1,4 @@
-import opennlp.tools.namefind.NameFinderME;
-import opennlp.tools.namefind.TokenNameFinderModel;
-import opennlp.tools.postag.POSModel;
-import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.SimpleTokenizer;
-import opennlp.tools.util.Span;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
 
 public class OpenNLP {
     String [] tokens;
@@ -18,8 +7,6 @@ public class OpenNLP {
         this.text = text;
         SimpleTokenizer tokenizer = SimpleTokenizer.INSTANCE;
         tokens = tokenizer.tokenize(text);
-
-
     }
 
 
