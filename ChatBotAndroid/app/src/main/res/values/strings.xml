@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">ChatBot2</string>
+    <string-array name="generes">
+        <item>Classic</item>
+        <item>Sci-Fi</item>
+        <item>Thriller</item>
+        <item>Romance</item>
+        <item>Self-Help</item>
+        <item>New1</item>
+        <item>New2</item>
+    </string-array>
+    <string-array name="Identity">
+        <item>Bot</item>
+        <item>User</item>
+    </string-array>
+    <string-array name="Messages">
+        <item>Hi there, my name is chat bot</item>
+        <item>What is your name?</item>
+    </string-array>
+
+</resources>
