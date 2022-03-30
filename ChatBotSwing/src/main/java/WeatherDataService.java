@@ -11,26 +11,27 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 
 import static edu.stanford.nlp.pipeline.StanfordCoreNLP.OutputFormat.JSON;
 
 public class WeatherDataService {
     public static final String QUERY_CITY_ID = "https://www.metaweather.com/api/location/search/?query=";
     public static final String QUERY_WEATHER_ID = "https://www.metaweather.com/api/location/";
-
+    public static ArrayList<String> weatherLookAhead;
     String cityId;
     String vanId = "9807";
 
-    public void getJson(String urlString) {
+    public ArrayList<String> getJson(String urlString) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(urlString)).build();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
                 .thenApply(WeatherDataService::parse)
                 .join();
-
-        System.out.println("------------------");
-
+        //System.out.println("------------------");
+        //System.out.println(weatherLookAhead);
+        return weatherLookAhead;
     }
     private String weather_state_abbr;
     private String wind_direction_compass;
@@ -45,23 +46,28 @@ public class WeatherDataService {
     private int humidity;
     private float visibility;
     private int predictability;
-    public static String parse(String responseBody) {
+    public static ArrayList<String> parse(String responseBody) {
 
         JSONObject object;
         object = new JSONObject(responseBody);
         //System.out.println(object);
         JSONArray objects = object.getJSONArray("consolidated_weather");
+        weatherLookAhead = new ArrayList<>();
+
         for (int i = 0; i < objects.length(); i++) {
             JSONObject inner_object = objects.getJSONObject(i);
             int id = inner_object.getInt("id");
             String weather_state = inner_object.getString("weather_state_name");
             Float max_temp = inner_object.getFloat("max_temp");
             Float min_temp = inner_object.getFloat("min_temp");
-            System.out.println(weather_state + " " + max_temp + " " + min_temp);
+            String line = "";
+            weatherLookAhead.add(weather_state + ", High of " + max_temp + ", Low of " + min_temp);
+            //System.out.println(weather_state + " " + max_temp + " " + min_temp);
         }
-        return " ";
+        return weatherLookAhead;
 
     }
+
 
 }
 //    public static HttpURLConnection connection;

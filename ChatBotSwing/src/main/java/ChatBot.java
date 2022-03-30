@@ -46,7 +46,31 @@ public class ChatBot {
 		}
 		return sentiment;
 	}
+	public void weatherSearchReport() throws InterruptedException, IOException {
+		boolean weatherLoop = true;
+		while (weatherLoop) {
+			GUI.cbMsg = "What day and place would you like weather for?";
+			GUI.getCBM(GUI.cbMsg);
+			GUI.getUserIN();
+			reply = GUI.userMsg;
+			WeatherDataService weatherDataService = new WeatherDataService();
+			weatherDataService.getJson("https://www.metaweather.com/api/location/44418/");
+			ArrayList<String> weekForcast = weatherDataService.weatherLookAhead;
+			if (reply.contains("tomorrow")) {
+				GUI.cbMsg = "Tomorrow's weather is: " + weekForcast.get(0) + "\n Any other time/place you would like to search?";
+				GUI.getCBM(GUI.cbMsg);
+			} else {
+				String m = "This week looks as follows: \n";
+				GUI.cbMsg = m + weekForcast+ "\n Any other time/place you would like to search?";
+				GUI.getCBM(GUI.cbMsg);
+			}
+			GUI.getUserIN();
+			reply = GUI.userMsg;
+			Float continueBrowsing = testReaction(reply);
+			if (continueBrowsing < 0f) weatherLoop = false;
+		}
 
+	}
 	//.next usage noted
 	//PCA loop until user picks a book.
 	public void loopGeneraTitle(Person person,PCA pca, ArrayList<String> suggest, boolean last) throws InterruptedException, IOException {

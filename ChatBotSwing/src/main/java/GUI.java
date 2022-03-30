@@ -19,6 +19,7 @@ public class GUI<JTimer> implements ActionListener {
     static String browseBooks = "books";
     static String trivia = "trivia";
     static String request = "request";
+    static String weather = "weather";
     static String objective = "";
     static String sentiment = "Neutral";
     static String userMsg;
@@ -105,7 +106,7 @@ public class GUI<JTimer> implements ActionListener {
         getCBM(chatBot.getStatement(0));
         while(outterRun) {
             while(innerRun) {
-                getCBM("Would you like to: browse books, browse movies, play trivia, or request an item?");
+                getCBM("Would you like to: browse books, browse movies, search weather, play trivia, or request an item?");
                 getUserIN();
                 parse = new GoogleNLP(userMsg);
                 ArrayList<String> option = parse.getWords();
@@ -140,7 +141,18 @@ public class GUI<JTimer> implements ActionListener {
                     } else {
                         continue;
                     }
-                } else if (option.contains(request)) {
+                }
+                else if (option.contains(weather)) {
+                    getCBM("You have selected: weather, is that right?");
+                    getUserIN();
+                    Float yes = chatBot.testReaction(userMsg); //can pass string here instead
+                    if (yes>0f) {
+                        objective = weather;
+                        break;
+                    } else {
+                        continue;
+                    }
+                }else if (option.contains(request)) {
                     getCBM("You have selected: request a specific item, is that right?");
                     getUserIN();
                     Float yes = chatBot.testReaction(userMsg); //can pass string here instead
@@ -152,7 +164,7 @@ public class GUI<JTimer> implements ActionListener {
                     }
                 }
             }
-            System.out.println("Done initial branch: " + objective);
+            //System.out.println("Done initial branch: " + objective);
             outterRun = true;
             innerRun = true;
             while(innerRun) {
@@ -180,7 +192,10 @@ public class GUI<JTimer> implements ActionListener {
                     user1.setPcaVector(pca.getStandardUser());
                     user1.setTopThree(pca.getTopThree());
                     chatBot.loopGeneraTitleMovie(user1, pca, pca.getTopThree(), false);
-                } else if (objective.equalsIgnoreCase(request)) {
+                }
+                else if (objective.equalsIgnoreCase(weather)) {
+                    chatBot.weatherSearchReport();
+                }else if (objective.equalsIgnoreCase(request)) {
                     cbMsg = "What book would you like to search for?";
                     getCBM(cbMsg);
                     getUserIN();
