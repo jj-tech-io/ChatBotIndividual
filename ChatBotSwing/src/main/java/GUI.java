@@ -1,18 +1,18 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Scanner;
-import java.awt.Color;
-import java.awt.Dimension;
 import javax.swing.JFrame;
-import static java.awt.Color.black;
+import javax.swing.border.LineBorder;
 
-public class GUI<JTimer> implements ActionListener {
-    //
+public class GUI<JTimer> extends JFrame implements ActionListener {
+    //jj
     static PCA pca;
     static GoogleNLP parse;
     static String browseMovies = "movies";
@@ -28,78 +28,112 @@ public class GUI<JTimer> implements ActionListener {
     static boolean outterRun = true;
     static boolean innerRun = true;
     static Trivia myTrivia;
-    //
-    Timer timer;
-    int cb_user = 0;
-    int numClicks = 0;
-    JPanel top;
-    JPanel bot;
-    GridLayout mainGrid = new GridLayout(2,1);
-    GridLayout topgrid = new GridLayout(1,1);
-    GridLayout botgrid = new GridLayout(3,2);
     static ImageIcon img;
+    static BufferedImage botPicture;
     JFrame frame;
     JButton btnSend;
     JPanel panel;
 
-    static JLabel emptyT1 = new JLabel("   ");
-    static JLabel emptyT2 = new JLabel("   ");
-    static JLabel emptyB1 = new JLabel("   ");
-    static JLabel emptyB2 = new JLabel("   ");
+
     static JTextArea textArea;
     JScrollPane scrollPane;
     static JTextArea textInput;
-    int TOP = 300;
-    int BOT = 300;
-    int LEFT = 300;
-    int RIGHT = 300;
 
-    public GUI() {
-        emptyT1.setSize(new Dimension(500, 20));
-        emptyT2.setSize(new Dimension(100, 20));
-        emptyB1.setSize(new Dimension(500, 20));
-        emptyB2.setSize(new Dimension(100, 20));
-        top = new JPanel();
-        bot = new JPanel();
-        top.setLayout(topgrid);
-        botgrid.setHgap(10);
-        botgrid.setVgap(10);
-        topgrid.setHgap(10);
-        topgrid.setVgap(10);
-        bot.setLayout(botgrid);
-        top.setPreferredSize(new Dimension(800,400));
-        bot.setPreferredSize(new Dimension(800,100));
+
+    public GUI(String title) throws IOException {
+        super(title);
+        this.setSize(750,550);
+        this.setLocation(100,100);
+        //JFrame.setDefaultLookAndFeelDecorated(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Container mainContainer = this.getContentPane();
+        mainContainer.setLayout(new BorderLayout(8,6));
+        mainContainer.setBackground(Color.BLACK);
+        this.getRootPane().setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.BLACK));
+        //components
         textArea = new JTextArea(100,6);
         textArea.setAutoscrolls(true);
+        textArea.setFont(new Font("segoi",1,12));
+        textArea.setForeground(Color.BLACK);
         scrollPane = new JScrollPane(textArea);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        top.add(scrollPane);
-        bot.add(emptyT1);
-        bot.add(emptyT2);
+        scrollPane.setBackground(Color.DARK_GRAY);
         textInput = new JTextArea();
-        textInput.setPreferredSize(new Dimension(500, 40));
-        bot.add(textInput);
+        textInput.setBackground(Color.WHITE);
+        textInput.setFont(new Font("segoi",1,18));
+
         btnSend = new JButton("Send");
-        btnSend.setPreferredSize(new Dimension(80, 40));
+
+
         btnSend.setBackground(new Color(0,204,255));
-        btnSend.addActionListener(this);
-        bot.add(btnSend,Component.LEFT_ALIGNMENT);
-        bot.add(emptyB1);
-        bot.add(emptyB2);
+        btnSend.addActionListener(this::actionPerformed);
+
+        JLabel weatherLabel = new JLabel("Tomorrow: ");
+        weatherLabel.setFont(new Font("segoi",1,18));
+        weatherLabel.setForeground(Color.BLACK);
+        JLabel tempLabel = new JLabel("High:18 Low:7");
+        tempLabel.setFont(new Font("segoi",1,18));
+        tempLabel.setForeground(Color.BLACK);
+
+        botPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\bot.png"));
+        BufferedImage sunPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\sun.png"));
+        BufferedImage rainPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\rain.png"));
+        BufferedImage thermometerPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\thermometer.png"));
+        JLabel picTemp = new JLabel(new ImageIcon(thermometerPicture));
+        JLabel picBot = new JLabel(new ImageIcon(botPicture));
+        JLabel picSun = new JLabel(new ImageIcon(sunPicture));
+        JLabel picRain = new JLabel(new ImageIcon(rainPicture));
+
+
+
+        //Panel Top
+        JPanel topPanel = new JPanel();
+        topPanel.setBorder(new LineBorder(Color.BLACK,1));
+        topPanel.setBackground(Color.DARK_GRAY);
+        topPanel.setLayout(new FlowLayout(5));
+        topPanel.setPreferredSize(new Dimension(650,100));
+        topPanel.add(picBot,BorderLayout.PAGE_START);
+        topPanel.add(weatherLabel,BorderLayout.PAGE_START);
+        topPanel.add(picSun);
+        topPanel.add(picTemp);
+
+        topPanel.add(tempLabel);
+        //topPanel.add(picRain,BorderLayout.CENTER);
+        mainContainer.add(topPanel,BorderLayout.NORTH);
+
+        //panel middle
+        JPanel middlePanel = new JPanel();
+        middlePanel.setBorder(new LineBorder(Color.BLACK,1));
+        middlePanel.setLayout(new FlowLayout(4,4,4));
+        middlePanel.setBackground(Color.BLACK);
+
+        mainContainer.add(scrollPane,BorderLayout.CENTER);
+
+        //Bottom Panel
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBorder(new LineBorder(Color.BLACK,4));
+        bottomPanel.setLayout(new GridLayout(1,4,5,1));
+        bottomPanel.setBackground(Color.BLACK);
+
+        textInput.setColumns(2);
+        bottomPanel.add(textInput);
+        bottomPanel.add(btnSend);
+
+        //bottomPanel.add(bottomPanel, BorderLayout.CENTER);
+        bottomPanel.setBackground(Color.BLACK);
+        bottomPanel.setBorder(new LineBorder(Color.BLACK,1));
+        mainContainer.add(bottomPanel, BorderLayout.SOUTH);
+
         img=new ImageIcon("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\bot.png");
-        frame = new JFrame();
-        frame.setIconImage(img.getImage());
-        frame.setPreferredSize(new Dimension(850,550));
-        frame.setTitle("ChatBot");
-        frame.add(top, BorderLayout.NORTH);
-        frame.add(bot);
-        frame.setBackground(new Color(0,204,255));
-        frame.pack();
-        frame.setVisible(true);
+        this.setIconImage(img.getImage());
+
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        new GUI();
+        GUI gui = new GUI("Chat Bot");
+
+        gui.setVisible(true);
         Library library = new Library();
         ChatBot chatBot = new ChatBot();
         Person user1 = new Person();
@@ -237,6 +271,7 @@ public class GUI<JTimer> implements ActionListener {
     }
     public static void getCBM(String m) throws InterruptedException {
         Thread.sleep(10);
+
         cbMsg = "Chat Bot: "+m+"\n";
         textArea.append(cbMsg);
     }
