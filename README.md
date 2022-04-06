@@ -101,8 +101,18 @@ import matplotlib.pyplot as plt
 from autograd import grad 
 
 ### Class structure
+
 ## GUI.java
 Handles user input and bot outputs
+
+## WeatherDataService.java
+API request generates weather report, requested by city name
+
+## GoogleNLP.java
+API requests carry out tokenization, sentiment analysis and name recognision
+
+##GoogleResults.java
+API for web search that outputs results one at a time to user
 
 ## patterns.java
 Hasn't been integrated, is supposed to handle user input and bot outputs among other functions. Was supposed to do spell-checking and auto-correct to some extent. 
@@ -124,9 +134,6 @@ Contains statements and questions that are commonly used. Handles talking betwee
 
 ## PCA.java
 currently we have a hard coded "standard user matrix whose collumns represent likely users and combinations of highly rated generas. when a user enters their favorite genera a "one-hot encoded" vector is compared with the standard user matrix by finding the nearest neighbor in euclidian space. this nearest neighbor is used to generate possible generas the user will like. in the future we hope to fully implement logic similair to the jupyter notebook to reccommend books based on higher dimentional data using pca encoding and decoding of the one-hot encoded vector mentioned above. See TODO in PCA class (header)
-
-## quiz.java 
-This class has a bank of quiz questions that are randomly generated for users to test their knowledge about various books
 
 ## parse.java
 parse is a class of methods that finds a certain required key element of the input string, it is currently not being utilized but will be useful in later editions of this software which we aim to make more intelligent by recognizing patterns and keys such as verbs and nouns in user input see TODO in getNoun()
