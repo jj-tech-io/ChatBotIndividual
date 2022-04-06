@@ -14,7 +14,7 @@ Chat Bot Individual Project
 
 ## Description
 Book, movie and trivia chat bot
-![image](https://lucid.app/lucidchart/31edd7d9-aa2a-4762-8663-227b60ade3c3/edit?invitationId=inv_b733b717-41bd-436c-80ed-e84d2bbabcd8&page=0_0#)
+<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://lucid.app/documents/embeddedchart/31edd7d9-aa2a-4762-8663-227b60ade3c3" id="GaH8S3IrYqNk"></iframe></div>
 
 Chat bot for online library book suggestion, 
 console based: 
