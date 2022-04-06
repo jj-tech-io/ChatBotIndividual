@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.*;
 
 public class ChatBot {
@@ -46,6 +47,35 @@ public class ChatBot {
 		}
 		return sentiment;
 	}
+
+	public void searchWeb() throws InterruptedException, IOException {
+		GUI.cbMsg = "What would you like to search for?";
+		GUI.getCBM(GUI.cbMsg);
+		GUI.getUserIN();
+		reply = GUI.userMsg;
+		GoogleResults googleResults = new GoogleResults();
+		googleResults.getJson(reply);
+		ArrayList<String> searchResult = googleResults.listResult;
+		for(String s: searchResult) {
+			GUI.cbMsg = s;
+			GUI.getCBM(GUI.cbMsg);
+			GUI.cbMsg = "Would you like to see more results??";
+			GUI.getCBM(GUI.cbMsg);
+			GUI.getUserIN();
+			reply = GUI.userMsg;
+			Float yes = testReaction(reply); //can pass string here instead
+			if (yes<0f) {
+				return;
+			}
+			else {
+				continue;
+			}
+
+		}
+
+
+
+	}
 	public void weatherSearchReport() throws InterruptedException, IOException {
 		boolean weatherLoop = true;
 		while (weatherLoop) {
@@ -54,7 +84,7 @@ public class ChatBot {
 			GUI.getUserIN();
 			reply = GUI.userMsg;
 			WeatherDataService weatherDataService = new WeatherDataService();
-			weatherDataService.getJson("https://www.metaweather.com/api/location/44418/");
+			weatherDataService.getJson(reply);
 			ArrayList<String> weekForcast = weatherDataService.weatherLookAhead;
 			if (reply.contains("tomorrow")) {
 				GUI.cbMsg = "Tomorrow's weather is: " + weekForcast.get(0) + "\n Any other time/place you would like to search?";
@@ -64,6 +94,14 @@ public class ChatBot {
 				GUI.cbMsg = m + weekForcast+ "\n Any other time/place you would like to search?";
 				GUI.getCBM(GUI.cbMsg);
 			}
+			GUI.picWeather = GUI.picMix;
+			if(weekForcast.contains("mix")) GUI.picWeather = GUI.picMix;
+			else if(weekForcast.get(0).contains("rain")) GUI.picWeather = GUI.picRain;
+			else if(weekForcast.get(0).contains("cloud")) GUI.picWeather = GUI.picCloud;
+			else if(weekForcast.get(0).contains("sun")) GUI.picWeather = GUI.picSun;
+			GUI.topPanel.updateUI();
+
+
 			GUI.getUserIN();
 			reply = GUI.userMsg;
 			Float continueBrowsing = testReaction(reply);
@@ -96,7 +134,6 @@ public class ChatBot {
 					GUI.cbMsg = "Can i suggest: "+t+ " ?";
 					GUI.getCBM(GUI.cbMsg);
 					GUI.getUserIN();
-					GUI.getUserIN();
 					reply = GUI.userMsg;
 					addToCart = testReaction(reply);
 					if(addToCart>0f) {
@@ -112,6 +149,7 @@ public class ChatBot {
 						else {
 							continue;
 						}
+
 					}
 				}
 			}
@@ -139,7 +177,6 @@ public class ChatBot {
 				for (String m:titles) {
 					GUI.cbMsg = "Can i suggest: "+m+ " ?";
 					GUI.getCBM(GUI.cbMsg);
-					GUI.getUserIN();
 					GUI.getUserIN();
 					reply = GUI.userMsg;
 					yes = testReaction(reply); //can pass string here instead

@@ -20,6 +20,7 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
     static String trivia = "trivia";
     static String request = "request";
     static String weather = "weather";
+    static String search = "search";
     static String objective = "";
     static String sentiment = "Neutral";
     static String userMsg;
@@ -30,19 +31,30 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
     static Trivia myTrivia;
     static ImageIcon img;
     static BufferedImage botPicture;
+    static int lines = 0;
     JFrame frame;
     JButton btnSend;
     JPanel panel;
 
 
     static JTextArea textArea;
-    JScrollPane scrollPane;
+    static JScrollPane scrollPane;
     static JTextArea textInput;
 
-
+    static JLabel picBot;
+    static JLabel picTemp;
+    static JLabel picWeather;
+    static JLabel picSun;
+    static JLabel picRain;
+    static JLabel picCloud;
+    static JLabel picMix;
+    static JPanel topPanel;
+    static JLabel weatherLabel;
+    static String current, high, low;
     public GUI(String title) throws IOException {
+
         super(title);
-        this.setSize(750,550);
+        this.setSize(850,650);
         this.setLocation(100,100);
         //JFrame.setDefaultLookAndFeelDecorated(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,51 +66,57 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
         //components
         textArea = new JTextArea(100,6);
         textArea.setAutoscrolls(true);
-        textArea.setFont(new Font("segoi",1,12));
+        textArea.setFont(new Font("segoi",1,14));
         textArea.setForeground(Color.BLACK);
         scrollPane = new JScrollPane(textArea);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBackground(Color.DARK_GRAY);
+        scrollPane.setAutoscrolls(true);
         textInput = new JTextArea();
         textInput.setBackground(Color.WHITE);
         textInput.setFont(new Font("segoi",1,18));
-
         btnSend = new JButton("Send");
-
-
-        btnSend.setBackground(new Color(0,204,255));
+        btnSend.setBackground(Color.decode("#ccff33"));
         btnSend.addActionListener(this::actionPerformed);
+        high = "";
+        low = "";
 
-        JLabel weatherLabel = new JLabel("Tomorrow: ");
+        weatherLabel = new JLabel(current);
         weatherLabel.setFont(new Font("segoi",1,18));
         weatherLabel.setForeground(Color.BLACK);
-        JLabel tempLabel = new JLabel("High:18 Low:7");
-        tempLabel.setFont(new Font("segoi",1,18));
-        tempLabel.setForeground(Color.BLACK);
+
+
+
 
         botPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\bot.png"));
+        BufferedImage haroPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\haro.png"));
         BufferedImage sunPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\sun.png"));
         BufferedImage rainPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\rain.png"));
+        BufferedImage cloudPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\cloudy.png"));
+        BufferedImage mixPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\sunANDrain.png"));
         BufferedImage thermometerPicture = ImageIO.read(new File("C:\\Users\\JJ\\IdeaProjects\\ChatBotSwing\\src\\main\\resources\\thermometer.png"));
-        JLabel picTemp = new JLabel(new ImageIcon(thermometerPicture));
-        JLabel picBot = new JLabel(new ImageIcon(botPicture));
-        JLabel picSun = new JLabel(new ImageIcon(sunPicture));
-        JLabel picRain = new JLabel(new ImageIcon(rainPicture));
-
-
+        JLabel picHaro = new JLabel(new ImageIcon(haroPicture));
+        picHaro.setSize(new Dimension(80,80));
+        picBot = new JLabel(new ImageIcon(botPicture));
+        picTemp = new JLabel(new ImageIcon(thermometerPicture));
+        picSun = new JLabel(new ImageIcon(sunPicture));
+        picCloud = new JLabel(new ImageIcon(cloudPicture));
+        picMix = new JLabel(new ImageIcon(mixPicture));
+        picRain = new JLabel(new ImageIcon(rainPicture));
+        picWeather = new JLabel();
 
         //Panel Top
-        JPanel topPanel = new JPanel();
+        topPanel = new JPanel();
         topPanel.setBorder(new LineBorder(Color.BLACK,1));
         topPanel.setBackground(Color.DARK_GRAY);
         topPanel.setLayout(new FlowLayout(5));
-        topPanel.setPreferredSize(new Dimension(650,100));
-        topPanel.add(picBot,BorderLayout.PAGE_START);
-        topPanel.add(weatherLabel,BorderLayout.PAGE_START);
-        topPanel.add(picSun);
-        topPanel.add(picTemp);
+        topPanel.setPreferredSize(new Dimension(650,150));
+        topPanel.add(picHaro,BorderLayout.PAGE_START);
+        topPanel.add(weatherLabel,BorderLayout.CENTER);
+        topPanel.add(picTemp,BorderLayout.PAGE_END);
+        //topPanel.add(picWeather);
 
-        topPanel.add(tempLabel);
+
         //topPanel.add(picRain,BorderLayout.CENTER);
         mainContainer.add(topPanel,BorderLayout.NORTH);
 
@@ -107,7 +125,6 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
         middlePanel.setBorder(new LineBorder(Color.BLACK,1));
         middlePanel.setLayout(new FlowLayout(4,4,4));
         middlePanel.setBackground(Color.BLACK);
-
         mainContainer.add(scrollPane,BorderLayout.CENTER);
 
         //Bottom Panel
@@ -119,7 +136,7 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
         textInput.setColumns(2);
         bottomPanel.add(textInput);
         bottomPanel.add(btnSend);
-
+        bottomPanel.setPreferredSize(new Dimension(650,75));
         //bottomPanel.add(bottomPanel, BorderLayout.CENTER);
         bottomPanel.setBackground(Color.BLACK);
         bottomPanel.setBorder(new LineBorder(Color.BLACK,1));
@@ -131,7 +148,12 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
+        WeatherDataService weatherDataService = new WeatherDataService();
+        //weatherDataService.getJson("https://jsonplaceholder.typicode.com/albums");
+        weatherDataService.getJson("vancouver");
+        current = weatherDataService.currentWeather;
         GUI gui = new GUI("Chat Bot");
+
 
         gui.setVisible(true);
         Library library = new Library();
@@ -140,7 +162,7 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
         getCBM(chatBot.getStatement(0));
         while(outterRun) {
             while(innerRun) {
-                getCBM("Would you like to: browse books, browse movies, search weather, play trivia, or request an item?");
+                getCBM("Would you like to: \nbrowse books, browse movies, search websites, search weather, play trivia, or request an item?");
                 getUserIN();
                 parse = new GoogleNLP(userMsg);
                 ArrayList<String> option = parse.getWords();
@@ -196,6 +218,16 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
                     } else {
                         continue;
                     }
+                } else if (option.contains(search)) {
+                    getCBM("You have selected: search websites, is that right?");
+                    getUserIN();
+                    Float yes = chatBot.testReaction(userMsg); //can pass string here instead
+                    if (yes>0f) {
+                        objective = search;
+                        break;
+                    } else {
+                        continue;
+                    }
                 }
             }
             //System.out.println("Done initial branch: " + objective);
@@ -229,6 +261,10 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
                 }
                 else if (objective.equalsIgnoreCase(weather)) {
                     chatBot.weatherSearchReport();
+                    weatherLabel.updateUI();
+                }else if (objective.equalsIgnoreCase(search)) {
+                    chatBot.searchWeb();
+
                 }else if (objective.equalsIgnoreCase(request)) {
                     cbMsg = "What book would you like to search for?";
                     getCBM(cbMsg);
@@ -253,7 +289,7 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
                         getCBM(cbMsg);
                     }
                 }
-                cbMsg = "Thank you for using this service, would you like to continue browsing?";
+                cbMsg = "Thank you for using this service, would you like to continue?";
                 getCBM(cbMsg);
                 getUserIN();
                 Float yes = chatBot.testReaction(userMsg); //can pass string here instead
@@ -270,12 +306,14 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
         }
     }
     public static void getCBM(String m) throws InterruptedException {
+        lines++;
         Thread.sleep(10);
 
-        cbMsg = "Chat Bot: "+m+"\n";
+        cbMsg = "Haro: "+m+"\n";
         textArea.append(cbMsg);
     }
     public static void getUserIN() throws InterruptedException {
+        lines++;
         while(IN) {
             Thread.sleep(10);
         }
@@ -284,8 +322,31 @@ public class GUI<JTimer> extends JFrame implements ActionListener {
         textInput.setText("");
         IN = true;
     }
+    public JLabel getWeatherIcon() throws IOException {
+        WeatherDataService weather = new WeatherDataService();
+        ArrayList<String> w = weather.getJson("vancouver");
+        String tomorrow = w.get(0);
+        picWeather = picSun;
+        if(tomorrow.contains("rain")) {
+            picWeather = picRain;
+        }
+        else if(tomorrow.contains("cloud")) {
+            picWeather = picCloud;
+        }
+        else if(tomorrow.contains("sun")&&tomorrow.contains("rain")) {
+            picWeather = picMix;
+        }
+        else if(tomorrow.contains("sun")) {
+            picWeather = picSun;
+        }
+        System.out.println(tomorrow);
+        return picWeather;
+
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
+        weatherLabel.setText(current);
         IN = false;
     }
+
 }

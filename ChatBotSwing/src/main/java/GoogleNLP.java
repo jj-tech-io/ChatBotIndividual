@@ -45,7 +45,6 @@ public class GoogleNLP {
         }
         return sentiments;
     }
-
     public Float getSentiment() throws IOException {
         ArrayList<Float> sentiments = new ArrayList<>();
         Float sentimentFloat = 0f;
@@ -88,6 +87,4 @@ public class GoogleNLP {
         }
         return names;
     }
-
-
 }
