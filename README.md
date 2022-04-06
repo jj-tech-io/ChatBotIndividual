@@ -16,20 +16,18 @@ Chat Bot Individual Project
 Book, movie and trivia chat bot
 ![image](https://lucid.app/publicSegments/view/6d0c57e3-42de-4019-acc1-cb786ad8ae6d/image.png)
 
-Chat bot for online library book suggestion, 
-console based: 
-https://github.com/COSC-310-Team-27/Assignment2/tree/main/Console/src
+Chat bot for online library book suggestion, weather, web search and trivia:
 
-mobile (WIP): 
-https://github.com/COSC-310-Team-27/Assignment2/tree/main/ChatBotMobile
+Desk Top:
+https://github.com/jj-tech-io/ChatBotIndividual/tree/master/ChatBotSwing
 
-browser(WIP): 
-https://github.com/COSC-310-Team-27/Assignment2/tree/main/ChatBotHTML
-
-final release: 
-https://github.com/COSC-310-Team-27/Assignment3/tree/main/ChatBotSwing
+Android:
+https://github.com/jj-tech-io/ChatBotIndividual/tree/master/ChatBotAndroid/app
 
 Bot intelligently responds to natural language input and suggests generas based on 
+Sentiment Analysis, Name Recognision: Google Cloud NLP API
+Web Search: Google Custom Search API
+Weather Reporting: Meta Weather API
 Principle Component Analysis: 
 https://github.com/COSC-310-Team-27/Assignment2/blob/main/Python_PCA/PCA_encode_decode.ipynb
 and Euclidian proximity to nearest standard user vector: 
@@ -41,17 +39,60 @@ and a number of other features found in the console folder. For those who are mo
 2. If you're on Intellij, create a new maven project.
 3. Copy and paste src from repository to project src folder, copy and paste pom.xml from repository to project pom.xml.
 
-### Dependencies
 
 ### Dependencies
-pom.xml:
-  edu.stanford.nlp,
-  org.slf4j,
-  junit,
-  org.testng,
-  org.apache.opennlp,
-  com.google.cloud,
-  org.apache.commons.math3.*
+Maven:
+   <dependencies>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>4.4.0</version>
+            <classifier>models</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.6.2</version>
+            <scope>nlp2</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.opennlp</groupId>
+            <artifactId>opennlp-tools</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-language</artifactId>
+            <version>1.14.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20220320</version>
+        </dependency>
+
+
+    </dependencies>
 
 python dependencies (pip install via console):
 import pandas as pd
