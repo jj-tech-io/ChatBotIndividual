@@ -13,7 +13,7 @@ Chat Bot Individual Project
 <br/>Acknowledgments
 
 ## Description
-Book, movie and trivia chat bot
+Web search, weather reports, book, movie and trivia chat bot
 ![image](https://lucid.app/publicSegments/view/6d0c57e3-42de-4019-acc1-cb786ad8ae6d/image.png)
 
 Chat bot for online library book suggestion, weather, web search and trivia:
@@ -173,7 +173,10 @@ List of limitations (Work in progress)
 ## Authors
 
 Contributors names and student numbers:
+Current Version 1.0 (PCA,WebSearch, Weather, Jupyter NB, Mobile, Current ChatBotSwing):
+<br />Joel Johnson (37794112)
 
+Past Iterations 0.1,0.2:
 <br />Joel Johnson (37794112)
 <br />Mahir Rahman (71811509)
 <br />Matthew Halim (12588786)
@@ -182,7 +185,12 @@ Contributors names and student numbers:
 
 
 ## Version History
-
+* 1.0
+   *Implemented web search
+   *Implemented Weather Report
+   *Improved The UI components
+   *Ofloaded NLP functionality to the cloud using Google Cloud NLP
+   
 * 0.2
     * Various bug fixes and optimizations
     * See [commit change]() or See [release history]()
